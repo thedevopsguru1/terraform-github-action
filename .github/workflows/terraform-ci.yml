@@ -95,7 +95,7 @@ jobs:
         run: terraform init -upgrade
 
       - name: Check Terraform Formatting
-        run: terraform fmt 
+        run: terraform fmt -check
 
   plan:
     name: Terraform Plan
@@ -127,7 +127,7 @@ jobs:
         run: terraform plan -out=tfplan
 
       - name: Upload Terraform Plan Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4 # Updated to v4
         with:
           name: tfplan
           path: tfplan
@@ -189,4 +189,11 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init
+        run: terraform init -upgrade
+
+      - name: Destroy Terraform Resources
+        run: terraform destroy -auto-approve
