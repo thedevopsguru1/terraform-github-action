@@ -11,7 +11,7 @@ on:
 
 env:
   TF_VERSION: "latest"
-  AWS_REGION: "us-east-2"  # Change to your AWS region
+  AWS_REGION: "us-east-1"  # Change to your AWS region
 
 jobs:
   setup:
@@ -55,6 +55,9 @@ jobs:
       - name: Verify Terraform Installation
         run: terraform --version
 
+      - name: Terraform Init
+        run: terraform init -upgrade # Ensure init is run
+
       - name: Terraform Validate
         run: terraform validate
 
@@ -74,6 +77,9 @@ jobs:
       - name: Verify Terraform Installation
         run: terraform --version
 
+      - name: Terraform Init
+        run: terraform init -upgrade # Ensure init is run
+
       - name: Check Terraform Formatting
         run: terraform fmt -check
 
@@ -92,6 +98,9 @@ jobs:
 
       - name: Verify Terraform Installation
         run: terraform --version
+
+      - name: Terraform Init
+        run: terraform init -upgrade # Ensure init is run
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan
@@ -120,6 +129,9 @@ jobs:
       - name: Verify Terraform Installation
         run: terraform --version
 
+      - name: Terraform Init
+        run: terraform init -upgrade # Ensure init is run
+
       - name: Download Terraform Plan
         uses: actions/download-artifact@v3
         with:
@@ -144,6 +156,9 @@ jobs:
 
       - name: Verify Terraform Installation
         run: terraform --version
+
+      - name: Terraform Init
+        run: terraform init -upgrade # Ensure init is run
 
       - name: Destroy Terraform Resources
         run: terraform destroy -auto-approve
