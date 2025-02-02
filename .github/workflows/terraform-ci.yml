@@ -11,7 +11,7 @@ on:
 
 env:
   TF_VERSION: latest
-  AWS_REGION: us-east-2 # Set AWS Region here
+  AWS_REGION: us-east-2 # Set AWS Region here .
 
 jobs:
   setup:
