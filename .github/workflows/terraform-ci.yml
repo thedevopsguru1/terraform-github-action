@@ -11,7 +11,11 @@ on:
 
 env:
   TF_VERSION: latest
-  AWS_REGION: us-east-2 # Set AWS Region here
+  AWS_REGION: us-east-2
+  TERRAFORM_CLI_PATH: /home/runner/work/_temp/2b5986e3-cac2-41cc-b033-07ab730ab01f
+  AWS_DEFAULT_REGION: us-east-2
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
   setup:
@@ -49,8 +53,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Terraform Init
-        run: terraform init -upgrade  # Ensure that providers are installed
+      - name: Terraform Init with Reconfigure
+        run: terraform init -reconfigure  # Ensure backend is properly initialized
 
       - name: Terraform Validate
         run: terraform validate
@@ -74,6 +78,9 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init with Reconfigure
+        run: terraform init -reconfigure  # Reinitialize the backend if needed
 
       - name: Generate Terraform Plan
         run: terraform plan -out=tfplan
@@ -105,8 +112,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Terraform Init
-        run: terraform init -upgrade
+      - name: Terraform Init with Reconfigure
+        run: terraform init -reconfigure
 
       - name: Download Terraform Plan
         uses: actions/download-artifact@v4
@@ -137,8 +144,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Terraform Init
-        run: terraform init -upgrade
+      - name: Terraform Init with Reconfigure
+        run: terraform init -reconfigure
 
       - name: Destroy Terraform Resources
         run: terraform destroy -auto-approve
